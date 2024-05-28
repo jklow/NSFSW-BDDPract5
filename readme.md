@@ -27,21 +27,27 @@ In this exercise, you will create API endpoints to insert a new category and ret
       **Part 1**
       
       **Register Endpoint**
-      Add the following code for the /register route in userRoutes.js:
+
+      Modify the following code for the /register route in userRoutes.js:
 
       router.post("/register", userController.checkUsernameOrEmailExist, bcryptMiddleware.hashPassword, userController.register, jwtMiddleware.generateToken, jwtMiddleware.sendToken);
 
       Specifications:
       
       HTTP Method: POST
+   
       Route: /user/register
+
       Controller Functions:
       bcryptMiddleware.hashPassword:
       This middleware hashes the password provided in the request body using bcrypt and the specified number of salt rounds. The hashed password is stored in res.locals.hash for later use.
+
       userController.register:
       This function is responsible for handling the registration logic. It checks if the required fields (username, email, and password) are provided in the request body. It then inserts the new user into the database with the hashed password. If the insertion is successful, it stores the user's ID in res.locals for later use.
+
       jwtMiddleware.generateToken:
       This middleware generates a JWT token using the user's information stored in res.locals. The token is signed using the secret key and configured options.
+
       jwtMiddleware.sendToken:
       This middleware sends the generated JWT token in the response along with a success message.
 
@@ -52,6 +58,7 @@ In this exercise, you will create API endpoints to insert a new category and ret
       username: a unique username
       email: a unique email address
       password: a password for the user
+
       Output:
       Status code: 200
       JSON body:
@@ -76,6 +83,7 @@ In this exercise, you will create API endpoints to insert a new category and ret
       userController.loginUser: 
 
       This function is responsible for handling the login logic. It checks if the username and password are provided in the request body. It then queries the database to find the user with the provided username. If the user exists, it stores the user's information in res.locals for later use.
+
       bcryptMiddleware.comparePassword:
       This middleware compares the password provided in the request body with the hashed password stored in res.locals.hash. If the passwords match, it calls the next middleware.
 
