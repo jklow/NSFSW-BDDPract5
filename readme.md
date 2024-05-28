@@ -58,8 +58,11 @@ In this exercise, you will create API endpoints to insert a new category and ret
       message: User {username} created successfully.
 
       **Part 2**
+   
       **Login Endpoint**
+
       Modify the following code for the /login route in userRoutes.js and its respective controller/model codes if necessary: 
+
       router.post("/login", userController.loginUser, bcryptMiddleware.comparePassword, jwtMiddleware.generateToken, jwtMiddleware.sendToken);
 
       Specifications:
