@@ -68,13 +68,19 @@ In this exercise, you will create API endpoints to insert a new category and ret
       Specifications:
 
       HTTP Method: POST
+   
       Route: /user/login
+
       Controller Functions:
+   
       userController.loginUser: 
+
       This function is responsible for handling the login logic. It checks if the username and password are provided in the request body. It then queries the database to find the user with the provided username. If the user exists, it stores the user's information in res.locals for later use.
       bcryptMiddleware.comparePassword:
       This middleware compares the password provided in the request body with the hashed password stored in res.locals.hash. If the passwords match, it calls the next middleware.
+
       jwtMiddleware.generateToken:
+   
       This middleware generates a JWT token using the user's information stored in res.locals. The token is signed using the secret key and configured options.
       jwtMiddleware.sendToken:
       This middleware sends the generated JWT token in the response along with a success message.
@@ -85,20 +91,26 @@ In this exercise, you will create API endpoints to insert a new category and ret
       Input JSON:
       username: the username of the user
       password: the password of the user
+
       Output:
       Status code: 200
+
       JSON body:
       token: a JWT token
+
       Requirement B:
       Return an error if the username or password is incorrect.
       
       Input JSON:
       username: a nonexistent username
       password: an incorrect password
+
       Output:
       Status code: 404 (Not Found)
+
       JSON body:
       message: "User not found"
+   
 6. **Submit your solution**:
    Once you finish testing your application, you can submit your solution for grading.
 
