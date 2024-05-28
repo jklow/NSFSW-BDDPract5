@@ -24,57 +24,40 @@ In this exercise, you will create API endpoints to insert a new category and ret
 
 4. **Implement your Express.js application**: Create your Express.js application with the required endpoints and/or functionality based on the following specifications.
 
-      **Basic Part 1**
-      POST request to create a new category      
+      **Part 1**
+      
+      Register Endpoint
+      Add the following code for the /register route in userRoutes.js:
 
-      1.Method: POST
-      Endpoint: http://localhost:3000/category
-      Body (JSON): 
+      router.post("/register", userController.checkUsernameOrEmailExist, bcryptMiddleware.hashPassword, userController.register, jwtMiddleware.generateToken, jwtMiddleware.sendToken);
 
-      {
-       "name": "Cupboards",
-        "description": "Good and reliable storage spaces"
-      }
+Specifications:
 
-      Expected Behavior:
-      If the insertion is successful:
-      Create a new category.
-      Return a success message if the operation is successful.
-      Status Code: 201 Created
+HTTP Method: POST
+Route: /user/register
+Controller Functions:
+bcryptMiddleware.hashPassword:
+This middleware hashes the password provided in the request body using bcrypt and the specified number of salt rounds. The hashed password is stored in res.locals.hash for later use.
+userController.register:
+This function is responsible for handling the registration logic. It checks if the required fields (username, email, and password) are provided in the request body. It then inserts the new user into the database with the hashed password. If the insertion is successful, it stores the user's ID in res.locals for later use.
+jwtMiddleware.generateToken:
+This middleware generates a JWT token using the user's information stored in res.locals. The token is signed using the secret key and configured options.
+jwtMiddleware.sendToken:
+This middleware sends the generated JWT token in the response along with a success message.
 
-      Sample Response:
-      {
-      "message": "New Category created successfully."
-      } 
+Requirement: 
+Create a new user with a unique username and email.
 
-      If the insertion fails:
-      Return an appropriate error message with a status code of 500.
+Input JSON:
+username: a unique username
+email: a unique email address
+password: a password for the user
+Output:
+Status code: 200
+JSON body:
+message: User {username} created successfully.
 
-     **Basic Part 2**
-      GET request to retrieve a furniture from a particular category:
-
-      Method: GET
-      Endpoint: http://localhost:3000/category/:categoryId/furniture
-      Params:
-      categoryId: The ID of the category to retrieve.
-      Body: Leave it empty
-
-      Sample Response:
-      {
-      "fid": 1,
-      "name": "Brown Leather Sofa",
-      "description": "Stylish and suitable for all homes",
-      "price": "500",
-      "quantity": 20,
-      "catid": "1",
-      "catName": "Sofa"
-    
-      }
-
-    If error occurs
-    Return an appropriate error message with a status code of 500.
-
-5. **Submit your solution**:
+6. **Submit your solution**:
    Once you finish testing your application, you can submit your solution for grading.
 
    Note: Make sure your Express.js application follows the specified endpoint URLs and handles requests and responses correctly according to the given instructions.
