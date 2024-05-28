@@ -26,37 +26,76 @@ In this exercise, you will create API endpoints to insert a new category and ret
 
       **Part 1**
       
-      Register Endpoint
+      **Register Endpoint**
       Add the following code for the /register route in userRoutes.js:
 
       router.post("/register", userController.checkUsernameOrEmailExist, bcryptMiddleware.hashPassword, userController.register, jwtMiddleware.generateToken, jwtMiddleware.sendToken);
 
-Specifications:
+      Specifications:
+      
+      HTTP Method: POST
+      Route: /user/register
+      Controller Functions:
+      bcryptMiddleware.hashPassword:
+      This middleware hashes the password provided in the request body using bcrypt and the specified number of salt rounds. The hashed password is stored in res.locals.hash for later use.
+      userController.register:
+      This function is responsible for handling the registration logic. It checks if the required fields (username, email, and password) are provided in the request body. It then inserts the new user into the database with the hashed password. If the insertion is successful, it stores the user's ID in res.locals for later use.
+      jwtMiddleware.generateToken:
+      This middleware generates a JWT token using the user's information stored in res.locals. The token is signed using the secret key and configured options.
+      jwtMiddleware.sendToken:
+      This middleware sends the generated JWT token in the response along with a success message.
 
-HTTP Method: POST
-Route: /user/register
-Controller Functions:
-bcryptMiddleware.hashPassword:
-This middleware hashes the password provided in the request body using bcrypt and the specified number of salt rounds. The hashed password is stored in res.locals.hash for later use.
-userController.register:
-This function is responsible for handling the registration logic. It checks if the required fields (username, email, and password) are provided in the request body. It then inserts the new user into the database with the hashed password. If the insertion is successful, it stores the user's ID in res.locals for later use.
-jwtMiddleware.generateToken:
-This middleware generates a JWT token using the user's information stored in res.locals. The token is signed using the secret key and configured options.
-jwtMiddleware.sendToken:
-This middleware sends the generated JWT token in the response along with a success message.
+      Requirement: 
+      Create a new user with a unique username and email.
+      
+      Input JSON:
+      username: a unique username
+      email: a unique email address
+      password: a password for the user
+      Output:
+      Status code: 200
+      JSON body:
+      message: User {username} created successfully.
 
-Requirement: 
-Create a new user with a unique username and email.
+      **Part 2**
+      **Login Endpoint**
+      Modify the following code for the /login route in userRoutes.js and its respective controller/model codes if necessary: 
+      router.post("/login", userController.loginUser, bcryptMiddleware.comparePassword, jwtMiddleware.generateToken, jwtMiddleware.sendToken);
 
-Input JSON:
-username: a unique username
-email: a unique email address
-password: a password for the user
-Output:
-Status code: 200
-JSON body:
-message: User {username} created successfully.
+      Specifications:
 
+      HTTP Method: POST
+      Route: /user/login
+      Controller Functions:
+      userController.loginUser: 
+      This function is responsible for handling the login logic. It checks if the username and password are provided in the request body. It then queries the database to find the user with the provided username. If the user exists, it stores the user's information in res.locals for later use.
+      bcryptMiddleware.comparePassword:
+      This middleware compares the password provided in the request body with the hashed password stored in res.locals.hash. If the passwords match, it calls the next middleware.
+      jwtMiddleware.generateToken:
+      This middleware generates a JWT token using the user's information stored in res.locals. The token is signed using the secret key and configured options.
+      jwtMiddleware.sendToken:
+      This middleware sends the generated JWT token in the response along with a success message.
+
+      Requirement A:
+      Return a JWT token if the username and password match.
+      
+      Input JSON:
+      username: the username of the user
+      password: the password of the user
+      Output:
+      Status code: 200
+      JSON body:
+      token: a JWT token
+      Requirement B:
+      Return an error if the username or password is incorrect.
+      
+      Input JSON:
+      username: a nonexistent username
+      password: an incorrect password
+      Output:
+      Status code: 404 (Not Found)
+      JSON body:
+      message: "User not found"
 6. **Submit your solution**:
    Once you finish testing your application, you can submit your solution for grading.
 
